@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: pg_database
+    hostname: pg_database
+    image: postgres
+    volumes:
+      - ./volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=pgdb
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=VMware1!VMware1!
+    restart: unless-stopped
+    
+  nginx_webserver:
+    container_name: nginx_webserver
+    hostname: nginx_webserver
+    restart: always
+    build:
+      context: ./
+      dockerfile: dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - database
